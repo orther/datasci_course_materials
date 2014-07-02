@@ -1,12 +1,30 @@
 import oauth2 as oauth
 import urllib2 as urllib
+import os.path as osp
+import ConfigParser
+import StringIO
+import sys
 
 # See assignment1.html instructions or README for how to get these credentials
 
-api_key = "<Enter api key>"
-api_secret = "<Enter api secret>"
-access_token_key = "<Enter your access token key here>"
-access_token_secret = "<Enter your access token secret here>"
+# Load file with twitter info
+twitter_api_path = osp.abspath(osp.join(osp.dirname(osp.dirname(osp.abspath(__file__))), 'twitter_api'))
+
+if not osp.exists(twitter_api_path):
+  print 'ERROR: could not find Twitter API file: ' + twitter_api_path
+  sys.exit(1)
+
+
+ini_str = '[root]\n' + open(twitter_api_path, 'r').read()
+ini_fp = StringIO.StringIO(ini_str)
+config = ConfigParser.RawConfigParser()
+config.readfp(ini_fp)
+
+
+api_key = config.get('root', 'api_key')
+api_secret = config.get('root', 'api_secret')
+access_token_key = config.get('root', 'access_token_key')
+access_token_secret = config.get('root', 'access_token_secret')
 
 _debug = 0
 
