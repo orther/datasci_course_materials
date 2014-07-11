@@ -1,7 +1,17 @@
 import json
 import sys
 
-from tweet_sentiment import build_sentiment_scores
+
+def build_sentiment_scores(sentiment_file):
+    scores = {} # initialize an empty dictionary
+
+    with open(sentiment_file) as f:
+        for line in f:
+            term, score  = line.split("\t")  # The file is tab-delimited. "\t" means "tab character"
+            scores[term] = int(score)  # Convert the score to an integer.
+
+    return scores
+
 
 def main():
     sentiment_scores = build_sentiment_scores(sys.argv[1])
